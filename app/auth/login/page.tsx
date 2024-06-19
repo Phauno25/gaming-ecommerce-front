@@ -8,26 +8,25 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { authService } from "../api/auth";
 import { LoginFormValues } from "../types/types";
 import clsx from "clsx";
-import { useAuth } from "@/app/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const [loginStatus, setLoginStatus] = useState<{
+    ok: boolean;
+    message: string;
+  }>();
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<LoginFormValues>();
-
-  const [loginStatus, setLoginStatus] = useState<{
-    ok: boolean;
-    message: string;
-  }>();
-  const auth = useAuth();
-  console.log(auth);
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       await authService.login(data);
       setLoginStatus({ ok: true, message: "Login correcto" });
+      router.push("/");
     } catch (error: any) {
       setLoginStatus({ ok: false, message: error?.error?.message });
     }

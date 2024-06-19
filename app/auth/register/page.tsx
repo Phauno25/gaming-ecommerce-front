@@ -16,9 +16,9 @@ const Page = () => {
     formState: { errors },
   } = useForm<RegisterFormValues>();
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+  const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
-      authService.register;
+      await authService.register(data);
       alert("Todo Ok");
     } catch (error) {
       throw error;
